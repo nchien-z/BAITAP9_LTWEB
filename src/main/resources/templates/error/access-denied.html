@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Từ chối truy cập (403 Forbidden) - SecurePortal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Header Fragment -->
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <main class="main-content">
+        <div style="max-width: 600px; margin: 4rem auto; text-align: center;">
+            <div class="card" style="padding: 3.5rem 2rem;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">⛔</div>
+                <h1 style="font-size: 2rem; font-weight: 800; color: #dc2626;">403 - Quyền Truy Cập Bị Từ Chối</h1>
+                <p style="color: var(--text-secondary); margin-top: 1rem; font-size: 1.05rem;">
+                    Rất tiếc! Tài khoản của bạn hiện tại không có quyền hạn quản trị (<code>ROLE_ADMIN</code>) để truy cập vào khu vực này.
+                </p>
+                <div style="margin-top: 2rem; display: flex; justify-content: center; gap: 1rem;">
+                    <a th:href="@{/home}" class="btn btn-primary">
+                        🏠 Trở về Trang Chủ
+                    </a>
+                    <form th:action="@{/logout}" method="post" style="margin: 0;">
+                        <button type="submit" class="btn btn-outline">
+                            Đăng nhập tài khoản khác
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Fragment -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

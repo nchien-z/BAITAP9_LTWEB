@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ - SecurePortal Enterprise</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Header Fragment -->
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <main class="main-content">
+        <!-- Hero Section -->
+        <div class="hero-card">
+            <h1 class="hero-title">Hệ Thống Quản Trị &amp; Xác Thực Bảo Mật</h1>
+            <p class="hero-subtitle">
+                Giải pháp toàn diện tích hợp Spring Boot 3, Spring Security 6, JPA Hibernate và cơ chế phân quyền RBAC chuẩn Enterprise.
+            </p>
+
+            <div class="hero-actions">
+                <div sec:authorize="isAnonymous()">
+                    <a th:href="@{/login}" class="btn btn-primary" style="background: white; color: var(--primary);">
+                        🚀 Đăng Nhập Hệ Thống
+                    </a>
+                </div>
+
+                <div sec:authorize="isAuthenticated()" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <a sec:authorize="hasAnyRole('ADMIN', 'ROLE_ADMIN')" th:href="@{/admin}" class="btn btn-primary" style="background: #dc2626; color: white;">
+                        🛡️ Mở Bảng Quản Trị (Admin)
+                    </a>
+                    <a th:href="@{/profile}" class="btn" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4);">
+                        👤 Xem Hồ Sơ Cá Nhân
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trạng thái người dùng đang đăng nhập -->
+        <div class="card" sec:authorize="isAuthenticated()">
+            <div class="card-header">
+                <h2>Thông Tin Phiên Đăng Nhập Hiện Tại</h2>
+                <span class="role-badge role-admin" sec:authorize="hasAnyRole('ADMIN', 'ROLE_ADMIN')">Quyền Quản Trị Viên</span>
+                <span class="role-badge role-user" sec:authorize="!hasAnyRole('ADMIN', 'ROLE_ADMIN')">Quyền Người Dùng</span>
+            </div>
+            <div class="card-body">
+                <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
+                    <img th:src="${#authentication.principal.avatar}" 
+                         alt="Avatar" 
+                         style="width: 72px; height: 72px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover;"
+                         onerror="this.src='/images/avatar-default.png'"/>
+                    <div>
+                        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary);" 
+                            th:text="${#authentication.principal.fullName}">Tên Người Dùng</h3>
+                        <div style="color: var(--text-secondary); margin-top: 0.25rem;">
+                            Email: <strong th:text="${#authentication.principal.email}">admin01@gmail.com</strong>
+                            | Tên đăng nhập: <strong th:text="${#authentication.principal.username}">admin01</strong>
+                        </div>
+                        <div style="margin-top: 0.5rem; font-size: 0.85rem; color: #059669; font-weight: 600;">
+                            🟢 Trạng thái: Đang đăng nhập và được bảo vệ bởi Spring Security
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer Fragment -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

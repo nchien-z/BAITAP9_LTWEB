@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng Quản Trị Hệ Thống - Admin Portal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Header Fragment -->
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <main class="main-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <h1 style="font-size: 2rem; font-weight: 800; color: #1e293b;">Bảng Quản Trị Hệ Thống</h1>
+                <p style="color: var(--text-secondary); margin-top: 0.25rem;">
+                    Khu vực bảo mật cao cấp dành riêng cho tài khoản Quản trị viên (<code>ROLE_ADMIN</code>)
+                </p>
+            </div>
+            <a th:href="@{/home}" class="btn btn-outline">⬅ Quay lại Trang chủ</a>
+        </div>
+
+        <!-- Thống kê nhanh -->
+        <div class="grid-3" style="margin-bottom: 2rem;">
+            <div class="feature-card" style="padding: 1.5rem;">
+                <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">
+                    Tổng số người dùng
+                </div>
+                <div style="font-size: 2.25rem; font-weight: 800; color: var(--primary); margin-top: 0.25rem;" 
+                     th:text="${userCount}">2</div>
+                <div style="font-size: 0.8rem; color: #10b981; margin-top: 0.25rem;">● Đồng bộ từ Database SQL Server</div>
+            </div>
+
+            <div class="feature-card" style="padding: 1.5rem;">
+                <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">
+                    Tài khoản Admin
+                </div>
+                <div style="font-size: 2.25rem; font-weight: 800; color: #dc2626; margin-top: 0.25rem;">admin01</div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">admin01@gmail.com</div>
+            </div>
+
+            <div class="feature-card" style="padding: 1.5rem;">
+                <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">
+                    Chính sách Bảo Mật
+                </div>
+                <div style="font-size: 2.25rem; font-weight: 800; color: #059669; margin-top: 0.25rem;">Active</div>
+                <div style="font-size: 0.8rem; color: #059669; margin-top: 0.25rem;">BCrypt Encrypted &amp; RBAC</div>
+            </div>
+        </div>
+
+        <!-- Bảng danh sách người dùng -->
+        <div class="card">
+            <div class="card-header">
+                <h2>Danh Sách Tài Khoản Trong Cơ Sở Dữ Liệu</h2>
+                <span style="font-size: 0.9rem; color: var(--text-secondary);">
+                    Hiển thị thông tin được ánh xạ qua <code>UserDTO</code> và <code>UserMapper</code>
+                </span>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Người dùng</th>
+                            <th>Tên đăng nhập</th>
+                            <th>Email</th>
+                            <th>Vai trò</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="u : ${users}">
+                            <td th:text="${u.id}" style="font-weight: 700; color: var(--text-secondary);">1</td>
+                            <td>
+                                <div class="table-user">
+                                    <img th:src="${u.avatar}" 
+                                         alt="Avatar" 
+                                         class="table-avatar"
+                                         onerror="this.src='/images/avatar-default.png'"/>
+                                    <span style="font-weight: 600;" th:text="${u.fullName}">Tên</span>
+                                </div>
+                            </td>
+                            <td>
+                                <code th:text="${u.username}" style="background: #f1f5f9; padding: 0.2rem 0.5rem; border-radius: 6px;">username</code>
+                            </td>
+                            <td th:text="${u.email}" style="color: var(--text-secondary);">email@example.com</td>
+                            <td>
+                                <span th:if="${#strings.contains(u.roleName, 'ADMIN')}" class="role-badge role-admin" th:text="${u.roleName}">ROLE_ADMIN</span>
+                                <span th:unless="${#strings.contains(u.roleName, 'ADMIN')}" class="role-badge role-user" th:text="${u.roleName}">ROLE_USER</span>
+                            </td>
+                            <td>
+                                <span th:if="${u.enabled}" style="color: #059669; font-weight: 600; font-size: 0.85rem;">
+                                    ● Hoạt động
+                                </span>
+                                <span th:unless="${u.enabled}" style="color: #dc2626; font-weight: 600; font-size: 0.85rem;">
+                                    ● Bị khóa
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Fragment -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

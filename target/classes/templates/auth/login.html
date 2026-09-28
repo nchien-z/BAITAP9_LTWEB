@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập hệ thống - SecurePortal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Header Fragment -->
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="brand-icon" style="margin: 0 auto; width: 48px; height: 48px; font-size: 1.5rem;">S</div>
+                <h1>Chào mừng trở lại!</h1>
+                <p>Đăng nhập bằng Email hoặc Tên đăng nhập</p>
+            </div>
+
+            <!-- Thông báo lỗi -->
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <span>⚠️</span>
+                <span th:text="${errorMessage}">Đăng nhập thất bại!</span>
+            </div>
+
+            <!-- Thông báo đăng xuất -->
+            <div th:if="${successMessage}" class="alert alert-success">
+                <span>✅</span>
+                <span th:text="${successMessage}">Đã đăng xuất!</span>
+            </div>
+
+            <form th:action="@{/login}" method="post">
+                <div class="form-group">
+                    <label class="form-label" for="username">Email hoặc Tên đăng nhập</label>
+                    <input type="text" id="username" name="username" class="form-control" 
+                           placeholder="Ví dụ: admin01@gmail.com hoặc admin01" required autofocus />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Mật khẩu</label>
+                    <input type="password" id="password" name="password" class="form-control" 
+                           placeholder="Nhập mật khẩu..." required />
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 0.85rem;">
+                    Đăng Nhập
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Footer Fragment -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body>
+<nav class="navbar" th:fragment="header">
+    <div class="nav-container">
+        <a th:href="@{/}" class="nav-brand">
+            <div class="brand-icon">S</div>
+            <span>SecurePortal</span>
+        </a>
+
+        <ul class="nav-menu">
+            <li>
+                <a th:href="@{/home}" class="nav-link">Trang Chủ</a>
+            </li>
+            <li sec:authorize="hasAnyRole('ADMIN', 'ROLE_ADMIN')">
+                <a th:href="@{/admin}" class="nav-link" style="color: #b91c1c; font-weight: 700;">
+                    🛡️ Quản Trị Hệ Thống
+                </a>
+            </li>
+        </ul>
+
+        <div class="nav-user">
+            <!-- ĐÃ ĐĂNG NHẬP -->
+            <div sec:authorize="isAuthenticated()" style="display: flex; align-items: center; gap: 1rem;">
+                <a th:href="@{/profile}" class="user-profile-badge" title="Xem hồ sơ cá nhân">
+                    <img th:src="${#authentication.principal.avatar}" 
+                         alt="Avatar" 
+                         class="user-avatar"
+                         onerror="this.src='/images/avatar-default.png'"/>
+                    <div class="user-meta">
+                        <span class="user-name" th:text="${#authentication.principal.fullName}">Tên Người Dùng</span>
+                        <span th:if="${#strings.contains(#authentication.principal.roleName, 'ADMIN')}" 
+                              class="role-badge role-admin">ADMIN</span>
+                        <span th:unless="${#strings.contains(#authentication.principal.roleName, 'ADMIN')}" 
+                              class="role-badge role-user">USER</span>
+                    </div>
+                </a>
+
+                <form th:action="@{/logout}" method="post" style="margin: 0;">
+                    <button type="submit" class="btn btn-outline" style="padding: 0.4rem 0.85rem; font-size: 0.85rem;">
+                        Đăng xuất
+                    </button>
+                </form>
+            </div>
+
+            <!-- CHƯA ĐĂNG NHẬP -->
+            <div sec:authorize="isAnonymous()">
+                <a th:href="@{/login}" class="btn btn-primary">
+                    Đăng nhập
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

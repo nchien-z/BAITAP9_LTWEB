@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ Sơ Cá Nhân - SecurePortal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Header Fragment -->
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <main class="main-content">
+        <div style="max-width: 750px; margin: 0 auto;">
+            <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                <h1 style="font-size: 1.85rem; font-weight: 800; color: #1e293b;">Hồ Sơ Người Dùng</h1>
+                <a th:href="@{/home}" class="btn btn-outline">⬅ Trang chủ</a>
+            </div>
+
+            <div class="card">
+                <div class="card-body" style="text-align: center; padding: 3rem 2rem;">
+                    <img th:src="${#authentication.principal.avatar}" 
+                         alt="Avatar" 
+                         style="width: 110px; height: 110px; border-radius: 50%; border: 4px solid var(--primary); object-fit: cover; margin-bottom: 1rem;"
+                         onerror="this.src='/images/avatar-default.png'"/>
+
+                    <h2 style="font-size: 1.6rem; font-weight: 800; color: #1e293b;" 
+                        th:text="${#authentication.principal.fullName}">Nguyễn Hữu Trung</h2>
+
+                    <div style="margin-top: 0.5rem;">
+                        <span th:if="${#strings.contains(#authentication.principal.roleName, 'ADMIN')}" 
+                              class="role-badge role-admin" style="font-size: 0.85rem; padding: 0.25rem 0.75rem;">
+                            QUẢN TRỊ VIÊN HỆ THỐNG
+                        </span>
+                        <span th:unless="${#strings.contains(#authentication.principal.roleName, 'ADMIN')}" 
+                              class="role-badge role-user" style="font-size: 0.85rem; padding: 0.25rem 0.75rem;">
+                            NGƯỜI DÙNG THÀNH VIÊN
+                        </span>
+                    </div>
+
+                    <div style="margin-top: 2.5rem; text-align: left; background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+                            <div>
+                                <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">
+                                    Tên đăng nhập (Username)
+                                </span>
+                                <div style="font-weight: 600; font-size: 1rem; margin-top: 0.25rem;" 
+                                     th:text="${#authentication.principal.username}">admin01</div>
+                            </div>
+
+                            <div>
+                                <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">
+                                    Địa chỉ Email
+                                </span>
+                                <div style="font-weight: 600; font-size: 1rem; margin-top: 0.25rem;" 
+                                     th:text="${#authentication.principal.email}">admin01@gmail.com</div>
+                            </div>
+
+                            <div>
+                                <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">
+                                    Mã ID người dùng
+                                </span>
+                                <div style="font-weight: 600; font-size: 1rem; margin-top: 0.25rem;" 
+                                     th:text="${#authentication.principal.id}">1</div>
+                            </div>
+
+                            <div>
+                                <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">
+                                    Cơ chế xác thực
+                                </span>
+                                <div style="font-weight: 600; font-size: 1rem; margin-top: 0.25rem; color: #059669;">
+                                    Spring Security 6 Custom
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 2rem; display: flex; justify-content: center; gap: 1rem;">
+                        <a sec:authorize="hasAnyRole('ADMIN', 'ROLE_ADMIN')" th:href="@{/admin}" class="btn btn-primary">
+                            🛡️ Đến Bảng Quản Trị Admin
+                        </a>
+                        <form th:action="@{/logout}" method="post" style="margin: 0;">
+                            <button type="submit" class="btn btn-danger-outline">
+                                Đăng xuất khỏi tài khoản
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Fragment -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>
