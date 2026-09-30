@@ -24,7 +24,7 @@ public class AuthController {
         }
 
         if (error != null) {
-            model.addAttribute("errorMessage", "Tài khoản hoặc mật khẩu không chính xác! Vui lòng thử lại.");
+            model.addAttribute("errorMessage", "Tài khoản hoặc mật khẩu không chính xác, chưa xác thực email hoặc đã bị khóa.");
         }
         if (logout != null) {
             model.addAttribute("successMessage", "Bạn đã đăng xuất thành công khỏi hệ thống.");

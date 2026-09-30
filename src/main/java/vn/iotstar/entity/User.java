@@ -44,6 +44,18 @@ public class User {
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
+    // Existing accounts are already verified; new registrations explicitly set false.
+    @Column(nullable = false, columnDefinition = "bit default 1")
+    private boolean emailVerified = true;
+
+    @OneToMany(mappedBy = "user")
+    private java.util.List<Product> products = new java.util.ArrayList<>();
+
+    public boolean isEmailVerified() { return emailVerified; }
+    public void setEmailVerified(boolean emailVerified) { this.emailVerified = emailVerified; }
+    public java.util.List<Product> getProducts() { return products; }
+    public void setProducts(java.util.List<Product> products) { this.products = products; }
+
     public User() { this.createdAt = LocalDateTime.now(); }
 
     public Long getId() { return id; }

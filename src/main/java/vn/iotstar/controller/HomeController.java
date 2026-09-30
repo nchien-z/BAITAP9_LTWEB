@@ -15,15 +15,19 @@ import java.util.List;
 public class HomeController {
 
     private final UserService userService;
+    private final vn.iotstar.service.ProductService productService;
 
-    public HomeController(UserService userService) {
+    public HomeController(UserService userService, vn.iotstar.service.ProductService productService) {
         this.userService = userService;
+        this.productService = productService;
     }
 
     @GetMapping({"/", "/home"})
     public String index(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
         model.addAttribute("currentUser", userDetails);
         model.addAttribute("totalUsers", userService.countUsers());
+        model.addAttribute("totalProducts", productService.countAll());
+        if (userDetails != null) model.addAttribute("ownProducts", productService.countByUser(userDetails.getId()));
         return "home";
     }
 
@@ -34,6 +38,7 @@ public class HomeController {
         model.addAttribute("users", users);
         model.addAttribute("currentUser", userDetails);
         model.addAttribute("userCount", users.size());
+        model.addAttribute("productCount", productService.countAll());
         return "admin";
     }
 

@@ -48,6 +48,14 @@ public class CustomUserDetails implements UserDetails {
         return "ROLE_ADMIN".equalsIgnoreCase(roleName) || "ADMIN".equalsIgnoreCase(roleName);
     }
 
+    @Override
+    public boolean equals(Object other) {
+        return this == other || other instanceof CustomUserDetails user && java.util.Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() { return java.util.Objects.hashCode(id); }
+
     // ---- UserDetails interface ----
     @Override 
     public Collection<? extends GrantedAuthority> getAuthorities() {

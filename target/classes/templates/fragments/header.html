@@ -12,6 +12,8 @@
         </a>
 
         <ul class="nav-menu">
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/products}" class="nav-link">Sản phẩm</a></li>
+            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/users}" class="nav-link">Người dùng</a></li>
             <li>
                 <a th:href="@{/home}" class="nav-link">Trang Chủ</a>
             </li>
@@ -48,6 +50,7 @@
 
             <!-- CHƯA ĐĂNG NHẬP -->
             <div sec:authorize="isAnonymous()">
+                <a th:href="@{/register}" class="btn btn-outline">Đăng ký</a>
                 <a th:href="@{/login}" class="btn btn-primary">
                     Đăng nhập
                 </a>

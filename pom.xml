@@ -13,7 +13,7 @@
     <artifactId>springboot-security</artifactId>
     <version>1.0.0</version>
     <name>springboot-security</name>
-    <description>Spring Security 6 - Kết hợp Ví dụ 1 và Ví dụ 2: Login bằng Username hoặc Email, hiển thị Avatar, FullName, Role ở Header</description>
+    <description>Ví dụ 1, 2, 3: Login session, OTP email, CRUD User/Product, Cloudinary, MapStruct</description>
 
     <properties>
         <java.version>21</java.version>
@@ -24,6 +24,20 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary-http5</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
         <!-- Spring Boot Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

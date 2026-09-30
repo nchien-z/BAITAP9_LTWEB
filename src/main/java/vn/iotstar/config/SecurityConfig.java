@@ -50,13 +50,14 @@ public class SecurityConfig {
                     "/home",
                     "/login",
                     "/register",
+                    "/verify-otp", "/resend-register-otp", "/forgot-password", "/reset-password",
                     "/css/**",
                     "/js/**",
                     "/images/**",
                     "/access-denied",
                     "/error"
                 ).permitAll()
-                .requestMatchers("/admin/**", "/dashboard/**").hasRole("ADMIN")
+                .requestMatchers("/admin/**", "/dashboard/**", "/users", "/users/**").hasRole("ADMIN")
                 .requestMatchers("/profile/**", "/user/**").authenticated()
                 .anyRequest().authenticated()
             )
@@ -78,8 +79,20 @@ public class SecurityConfig {
             )
             .exceptionHandling(ex -> ex
                 .accessDeniedPage("/access-denied")
-            );
+            )
+            .sessionManagement(session -> session.maximumSessions(1)
+                .sessionRegistry(sessionRegistry()));
 
         return http.build();
+    }
+
+    @Bean
+    public org.springframework.security.core.session.SessionRegistry sessionRegistry() {
+        return new org.springframework.security.core.session.SessionRegistryImpl();
+    }
+
+    @Bean
+    public org.springframework.security.web.session.HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new org.springframework.security.web.session.HttpSessionEventPublisher();
     }
 }

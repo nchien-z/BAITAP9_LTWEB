@@ -1,16 +1,24 @@
 package vn.iotstar.dto;
 
 import java.time.LocalDateTime;
+import jakarta.validation.constraints.*;
 
 public class UserDTO {
     private Long id;
+    @NotBlank @Pattern(regexp="[a-zA-Z0-9_.-]{3,60}")
     private String username;
+    @NotBlank @Email @Size(max=150)
     private String email;
+    @NotBlank @Size(max=200)
     private String fullName;
     private String avatar;
+    @NotBlank @Pattern(regexp="ROLE_USER|ROLE_ADMIN")
     private String roleName;
     private boolean enabled;
     private LocalDateTime createdAt;
+    private long productCount;
+    public long getProductCount() { return productCount; }
+    public void setProductCount(long count) { this.productCount=count; }
 
     public UserDTO() {}
 
